@@ -15,11 +15,9 @@
 """Scan to PDF.
 
 Usage:
-    scanpdf [options] scan 
-    scanpdf [options] pdf <pdffile> 
+    scanpdf [options] scan
+    scanpdf [options] pdf <pdffile>
     scanpdf [options] scan pdf <pdffile>
-    scanpdf [options] pdf
-    scanpdf [options] scan pdf
 
 
 Options:
@@ -28,14 +26,14 @@ Options:
     --dpi=<dpi>                 DPI to scan in [default: 300]
     --device=<device>           Scanning device (sub '%' for spaces)
     --crop                      Run ImageMagick cropping routine
-    --tmpdir=<dir>              Temporary directory 
+    --tmpdir=<dir>              Temporary directory
     --keep-tmpdir               Whether to keep the tmp dir after scanning or not [default: False]
     --face-up=<true/false>      Face-up scanning [default: True]
     --keep-blanks               Don't check for and remove blank pages
     --blank-threshold=<ths>     Percentage of white to be marked as blank [default: 0.97]
     --post-process              Process finished images with unpaper
     --text-recognize            Run pdfsandwich for text recognition
-    
+
 """
 
 import glob
@@ -47,7 +45,6 @@ import shutil
 import subprocess
 import sys
 import time
-import wx
 from multiprocessing.dummy import Pool as Threadpool
 
 import docopt
@@ -266,7 +263,7 @@ class ScanPdf(object):
     text_recognize = None
 
     def __init__(self):
-        """ 
+        """
         """
         self.config = None
         self.cwd = os.getcwd()
@@ -371,26 +368,6 @@ class ScanPdf(object):
         os.remove(pdf_file)
         shutil.move(ocr_file, pdf_file)
 
-    @staticmethod
-    def save_file(source_file):
-        """
-        Run dialog to save file to user-defined name/folder
-        :param source_file: pdf file in temporary directory
-        :return: None
-        """
-        path = None
-        _ = wx.App(redirect=True)
-        wildcard = "PDF Files (*.pdf)|*.pdf|" \
-                   "All files (*.*)|*.*"
-
-        dialog = wx.FileDialog(None, "Choose a file", os.path.expanduser("~"), "", wildcard, wx.SAVE)
-        if dialog.ShowModal() == wx.ID_OK:
-            path = dialog.GetPath()
-
-        dialog.Destroy()
-        logging.info("Saving from Dialog: " + path)
-        shutil.move(source_file, path)
-
     def run_convert(self, text_recognize):
         """
         convert images to pdf file, run text recongnition (if desired),
@@ -420,11 +397,7 @@ class ScanPdf(object):
         if text_recognize:
             logging.info("running pdf sandwich for text recognition...")
             self.run_text_recognize(pdf_basename)
-        if self.pdf_filename is not None:
-            shutil.move(pdf_basename, self.pdf_filename)
-        else:
-            source_file = os.path.join(self.tmp_dir, pdf_basename)
-            self.save_file(source_file)
+        shutil.move(pdf_basename, self.pdf_filename)
         for filename in self.pages + [ps_filename]:
             os.remove(filename)
 
