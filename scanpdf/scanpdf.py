@@ -316,7 +316,7 @@ class ScanPdf(object):
         :return: None
         """
         print("ERROR: %s" % msg)
-        sys.exit(-1)
+        raise Exception(msg)
 
     @staticmethod
     def _atoi(text):
