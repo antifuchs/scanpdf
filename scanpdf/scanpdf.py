@@ -347,7 +347,7 @@ class ScanPdf(object):
         :param pdf_file: pdf filename (in temporary directory)
         :return:
         """
-        c = ['pdfsandwich', '-coo', '\"-deskew 40%\"', pdf_file]
+        c = ['pdfsandwich', '-lang', 'eng+deu', '-rgb', pdf_file]
         self.cmd(c)
         filename, file_extension = os.path.splitext(pdf_file)
         ocr_file = filename + "_ocr" + file_extension
