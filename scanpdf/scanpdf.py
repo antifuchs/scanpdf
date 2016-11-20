@@ -75,7 +75,6 @@ class ProcessPage:
         Apply all processing in accordance with selcted options
         :return: None
         """
-        self.run_deskew()
         if self.scanpdf.crop:
             self.run_crop()
         self.convert_to_bw()
@@ -83,21 +82,6 @@ class ProcessPage:
             self.remove_blank()
         if self.page is not None and self.scanpdf.post_process:
             self.run_postprocess()
-
-    def run_deskew(self):
-        """
-        Deskew image using Marke Mauder Deskew
-        https://bitbucket.org/galfar/app-deskew
-        :return: None
-        """
-        deskew = os.path.dirname(os.path.realpath(__file__)) + os.path.sep + 'deskew64'
-        logging.info("Deskewing: " + os.path.basename(self.page))
-        ppm_page = '%s.ppm' % self.page
-        c = [deskew, ' %s ' % self.page, '-o', ppm_page]
-        result = self.scanpdf.cmd(c)
-        logging.debug("deskew result: " + result)
-        os.remove(self.page)
-        self.page = ppm_page
 
     def run_crop(self):
         """
