@@ -282,15 +282,17 @@ class ScanPdf(object):
              '--source "ADF Duplex"',
              '--mode Color',
              '--resolution %sdpi' % self.dpi,
-             '-o %s/page_%%04d' % self.tmp_dir,
-             '-y 279.364',
-             '--page-height 279.364',
+             '-o %s/page_%%04d.ppm' % self.tmp_dir,
+             '-y 900',
+             '--page-height 900',
+             '--ald=yes', '--swdeskew=yes', '--swdespeck=2', '--swskip 1%', '--swcrop=yes',
+             '--contrast=30'
              ]
         self.cmd(c)
         self.cmd('logger -t "scanbd: " "End of scan "')
         file_count = len([name for name in os.listdir(self.tmp_dir) if
                           os.path.isfile(os.path.join(self.tmp_dir, name))])
-        logging.info('Receved {0:d} files in {1:}...'.format(file_count, self.tmp_dir))
+        logging.info('Received {0:d} files in {1:}...'.format(file_count, self.tmp_dir))
 
     @staticmethod
     def _error(msg):
