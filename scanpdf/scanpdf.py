@@ -90,7 +90,7 @@ class ProcessPage:
         """
         logging.info("Cropping: " + os.path.basename(self.page))
         crop_page = '%s.crop' % self.page
-        c = ['convert', '-fuzz 20%', '-trim', self.page, crop_page]
+        c = ['convert', '-fuzz 50%', '-trim', self.page, crop_page]
         self.scanpdf.cmd(c)
         os.remove(self.page)
         self.page = crop_page
