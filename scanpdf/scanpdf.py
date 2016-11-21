@@ -75,6 +75,8 @@ class ProcessPage:
         Apply all processing in accordance with selcted options
         :return: None
         """
+        return None  # return early because we want literally none of these things.
+
         if self.scanpdf.crop:
             self.run_crop()
         self.convert_to_bw()
